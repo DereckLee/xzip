@@ -7,8 +7,21 @@ license = "MIT"
 repository = "https://github.com/DereckLee/rzip.git"
 readme = "README.md"
 
+[[bin]]
+name = "rzip"
+path = "src/main.rs"
+
+[[bin]]
+name = "gen-man"
+path = "src/bin/gen-man.rs"
+required-features = ["gen-man"]
+
+[features]
+gen-man = ["dep:clap_mangen"]
+
 [dependencies]
 clap = { version = "4", features = ["derive"] }
+clap_mangen = { version = "0.2", optional = true }
 encoding_rs = "0.8"
 globset = "0.4"
 thiserror = "1"

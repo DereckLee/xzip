@@ -16,6 +16,25 @@ It is designed for cases like:
 cargo install --locked rzip
 ```
 
+### Man pages
+
+Man pages are generated from the clap CLI definition via [`clap_mangen`](https://docs.rs/clap_mangen):
+
+```bash
+make man
+# produces man/rzip.1, man/rzip-pack.1, man/rzip-unpack.1
+
+man -l man/rzip.1
+man -l man/rzip-pack.1
+```
+
+Install man pages system-wide (requires root for `/usr/local`):
+
+```bash
+sudo make install-man
+man rzip
+```
+
 ## Usage
 
 ```bash

@@ -1,53 +1,9 @@
-use std::path::PathBuf;
+use clap::Parser;
 
-use clap::{Parser, Subcommand};
-
+use rzip::cli::{Cli, Command};
 use rzip::codec::EncodingKind;
 use rzip::error::RzipError;
 use rzip::{pack, unpack};
-
-#[derive(Parser, Debug)]
-#[command(
-    name = "rzip",
-    version,
-    about = "ZIP tool with explicit filename encoding control"
-)]
-struct Cli {
-    #[command(subcommand)]
-    command: Command,
-}
-
-#[derive(Subcommand, Debug)]
-enum Command {
-    /// Pack directory or file into a ZIP archive.
-    Pack {
-        #[arg(short = 'i', long)]
-        input: PathBuf,
-        #[arg(short = 'o', long)]
-        output: PathBuf,
-        #[arg(short = 'e', long, value_name = "ENCODING", default_value = "utf-8")]
-        encoding: String,
-        #[arg(short = 'r', long)]
-        recursive: bool,
-        #[arg(long = "include", value_name = "GLOB")]
-        include: Vec<String>,
-        #[arg(long = "exclude", value_name = "GLOB")]
-        exclude: Vec<String>,
-    },
-    /// Unpack a ZIP archive using a specific filename encoding.
-    Unpack {
-        #[arg(short = 'i', long)]
-        input: PathBuf,
-        #[arg(short = 'o', long)]
-        output: PathBuf,
-        #[arg(short = 'e', long, value_name = "ENCODING", default_value = "utf-8")]
-        encoding: String,
-        #[arg(long = "include", value_name = "GLOB")]
-        include: Vec<String>,
-        #[arg(long = "exclude", value_name = "GLOB")]
-        exclude: Vec<String>,
-    },
-}
 
 fn run(cli: Cli) -> Result<(), RzipError> {
     match cli.command {
