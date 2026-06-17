@@ -2,5 +2,17 @@
 name = "rzip"
 version = "0.1.0"
 edition = "2024"
+description = "ZIP CLI with explicit filename encoding for pack and unpack workflows."
+license = "MIT"
+repository = "https://github.com/DereckLee/rzip.git"
+readme = "README.md"
 
 [dependencies]
+clap = { version = "4", features = ["derive"] }
+encoding_rs = "0.8"
+thiserror = "1"
+walkdir = "2"
+zip = { version = "2", default-features = false, features = ["deflate"] }
+
+[dev-dependencies]
+tempfile = "3"
