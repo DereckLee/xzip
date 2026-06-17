@@ -8,11 +8,20 @@ use zip::{CompressionMethod, ZipWriter};
 
 use crate::codec::EncodingKind;
 use crate::error::RzipError;
+use crate::filter::PathFilter;
 
-pub fn pack_path(input: &Path, output_zip: &Path, encoding: EncodingKind) -> Result<(), RzipError> {
+pub fn pack_path(
+    input: &Path,
+    output_zip: &Path,
+    encoding: EncodingKind,
+    recursive: bool,
+    include: &[String],
+    exclude: &[String],
+) -> Result<(), RzipError> {
     if !input.exists() {
         return Err(RzipError::InvalidInput(input.to_path_buf()));
     }
+    let filter = PathFilter::new(include, exclude)?;
 
     let out_file = File::create(output_zip)?;
     let mut writer = ZipWriter::new(out_file);
@@ -31,10 +40,16 @@ pub fn pack_path(input: &Path, output_zip: &Path, encoding: EncodingKind) -> Res
             if path == input {
                 continue;
             }
+            if !recursive && path.parent() != Some(input) {
+                continue;
+            }
             let relative = path
                 .strip_prefix(input)
                 .map_err(|_| RzipError::InvalidInput(input.to_path_buf()))?;
             let zip_path = normalize_zip_path(relative);
+            if !filter.allows(&zip_path) {
+                continue;
+            }
             if entry.file_type().is_dir() {
                 // Keep directory structure stable in tools that expect explicit entries.
                 writer.add_directory(&zip_path, options)?;

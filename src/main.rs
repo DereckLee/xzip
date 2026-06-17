@@ -21,21 +21,31 @@ struct Cli {
 enum Command {
     /// Pack directory or file into a ZIP archive.
     Pack {
-        #[arg(long)]
+        #[arg(short = 'i', long)]
         input: PathBuf,
-        #[arg(long)]
+        #[arg(short = 'o', long)]
         output: PathBuf,
-        #[arg(long, value_name = "ENCODING")]
+        #[arg(short = 'e', long, value_name = "ENCODING", default_value = "utf-8")]
         encoding: String,
+        #[arg(short = 'r', long)]
+        recursive: bool,
+        #[arg(long = "include", value_name = "GLOB")]
+        include: Vec<String>,
+        #[arg(long = "exclude", value_name = "GLOB")]
+        exclude: Vec<String>,
     },
     /// Unpack a ZIP archive using a specific filename encoding.
     Unpack {
-        #[arg(long)]
+        #[arg(short = 'i', long)]
         input: PathBuf,
-        #[arg(long)]
+        #[arg(short = 'o', long)]
         output: PathBuf,
-        #[arg(long, value_name = "ENCODING")]
+        #[arg(short = 'e', long, value_name = "ENCODING", default_value = "utf-8")]
         encoding: String,
+        #[arg(long = "include", value_name = "GLOB")]
+        include: Vec<String>,
+        #[arg(long = "exclude", value_name = "GLOB")]
+        exclude: Vec<String>,
     },
 }
 
@@ -45,17 +55,22 @@ fn run(cli: Cli) -> Result<(), RzipError> {
             input,
             output,
             encoding,
+            recursive,
+            include,
+            exclude,
         } => {
             let encoding = EncodingKind::from_label(&encoding)?;
-            pack::pack_path(&input, &output, encoding)
+            pack::pack_path(&input, &output, encoding, recursive, &include, &exclude)
         }
         Command::Unpack {
             input,
             output,
             encoding,
+            include,
+            exclude,
         } => {
             let encoding = EncodingKind::from_label(&encoding)?;
-            unpack::unpack_archive(&input, &output, encoding)
+            unpack::unpack_archive(&input, &output, encoding, &include, &exclude)
         }
     }
 }

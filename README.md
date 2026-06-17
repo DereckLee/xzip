@@ -8,7 +8,7 @@ It is designed for cases like:
 - Archive extracted on an `en_US` UTF-8 machine.
 - Non-ASCII paths (CJK) become garbled without explicit encoding control.
 
-`rzip` requires you to pass `--encoding` for both `pack` and `unpack`, so behavior stays explicit and predictable.
+`rzip` defaults to `utf-8` when `--encoding` is omitted, and you can still override it with `-e/--encoding` for cross-locale archives.
 
 ## Install
 
@@ -20,10 +20,28 @@ cargo install --locked rzip
 
 ```bash
 # Pack a directory with explicit filename encoding
-rzip pack --input ./my-dir --output ./my-dir.zip --encoding gbk
+rzip pack -i ./my-dir -o ./my-dir.zip -e gbk -r
 
 # Unpack with explicit filename encoding
-rzip unpack --input ./my-dir.zip --output ./out --encoding gbk
+rzip unpack -i ./my-dir.zip -o ./out -e gbk
+
+# Omit encoding (defaults to utf-8)
+rzip pack -i ./my-dir -o ./my-dir.zip -r
+```
+
+## Common options
+
+- `-r, --recursive` (pack only): include nested files/directories.
+- `--include <GLOB>`: only process matching paths. Repeatable.
+- `--exclude <GLOB>`: skip matching paths. Repeatable.
+
+Example:
+
+```bash
+rzip pack -i ./project -o ./project.zip -e utf-8 -r \
+  --exclude ".git/**" \
+  --exclude "target/**" \
+  --include "**/*.rs"
 ```
 
 ## Supported encodings

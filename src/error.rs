@@ -17,6 +17,8 @@ pub enum RzipError {
     },
     #[error("cannot decode zip entry name using {encoding}")]
     DecodeEntryName { encoding: &'static str },
+    #[error("invalid glob pattern: {0}")]
+    InvalidGlobPattern(String),
     #[error("unsafe zip entry path escapes output directory: {0}")]
     UnsafePath(String),
     #[error("invalid input path: {0}")]
