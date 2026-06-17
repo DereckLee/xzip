@@ -2,10 +2,24 @@
 name = "rzip"
 version = "0.1.0"
 edition = "2024"
+rust-version = "1.85"
 description = "ZIP CLI with explicit filename encoding for pack and unpack workflows."
 license = "MIT"
-repository = "https://github.com/DereckLee/rzip.git"
+repository = "https://github.com/DereckLee/rzip"
+homepage = "https://github.com/DereckLee/rzip"
+documentation = "https://docs.rs/rzip"
 readme = "README.md"
+keywords = ["zip", "cli", "encoding", "unicode", "winrar"]
+categories = ["command-line-utilities", "compression", "encoding"]
+exclude = [
+    "AGENTS.md",
+    ".github/**",
+    ".idea/**",
+    ".vscode/**",
+    "target/**",
+    "man/**",
+    "*.zip",
+]
 
 [[bin]]
 name = "rzip"
