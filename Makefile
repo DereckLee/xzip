@@ -1,4 +1,4 @@
-.PHONY: help build test lint format check install man install-man
+.PHONY: help build test lint format check install man install-man clean
 
 PREFIX ?= /usr/local
 DESTDIR ?=
@@ -14,6 +14,7 @@ help:
 	@echo "  make man         - Generate man pages into ./man"
 	@echo "  make install     - Install xzip binary with lockfile"
 	@echo "  make install-man - Install man pages (run make man first)"
+	@echo "  make clean       - Remove build artifacts and generated files"
 
 build:
 	cargo build
@@ -38,3 +39,8 @@ install:
 install-man: man
 	install -d $(MAN_DIR)
 	install -m 644 man/xzip*.1 $(MAN_DIR)/
+
+clean:
+	cargo clean
+	rm -rf man/
+	rm -f *.zip
