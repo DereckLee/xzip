@@ -450,20 +450,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "rzip"
-version = "0.1.0"
-dependencies = [
- "clap",
- "clap_mangen",
- "encoding_rs",
- "globset",
- "tempfile",
- "thiserror 1.0.69",
- "walkdir",
- "zip",
-]
-
-[[package]]
 name = "same-file"
 version = "1.0.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -792,6 +778,20 @@ dependencies = [
  "serde_json",
  "unicode-xid",
  "wasmparser",
+]
+
+[[package]]
+name = "xzip"
+version = "0.1.0"
+dependencies = [
+ "clap",
+ "clap_mangen",
+ "encoding_rs",
+ "globset",
+ "tempfile",
+ "thiserror 1.0.69",
+ "walkdir",
+ "zip",
 ]
 
 [[package]]

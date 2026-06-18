@@ -1,6 +1,6 @@
 use globset::{Glob, GlobSet, GlobSetBuilder};
 
-use crate::error::RzipError;
+use crate::error::XzipError;
 
 #[derive(Debug)]
 pub struct PathFilter {
@@ -9,7 +9,7 @@ pub struct PathFilter {
 }
 
 impl PathFilter {
-    pub fn new(include: &[String], exclude: &[String]) -> Result<Self, RzipError> {
+    pub fn new(include: &[String], exclude: &[String]) -> Result<Self, XzipError> {
         Ok(Self {
             include: compile_globs(include)?,
             exclude: compile_globs(exclude)?,
@@ -31,7 +31,7 @@ impl PathFilter {
     }
 }
 
-fn compile_globs(patterns: &[String]) -> Result<Option<GlobSet>, RzipError> {
+fn compile_globs(patterns: &[String]) -> Result<Option<GlobSet>, XzipError> {
     if patterns.is_empty() {
         return Ok(None);
     }
@@ -39,11 +39,11 @@ fn compile_globs(patterns: &[String]) -> Result<Option<GlobSet>, RzipError> {
     let mut builder = GlobSetBuilder::new();
     for pattern in patterns {
         let glob =
-            Glob::new(pattern).map_err(|_| RzipError::InvalidGlobPattern(pattern.clone()))?;
+            Glob::new(pattern).map_err(|_| XzipError::InvalidGlobPattern(pattern.clone()))?;
         builder.add(glob);
     }
     let set = builder
         .build()
-        .map_err(|_| RzipError::InvalidGlobPattern("failed to build glob set".to_string()))?;
+        .map_err(|_| XzipError::InvalidGlobPattern("failed to build glob set".to_string()))?;
     Ok(Some(set))
 }

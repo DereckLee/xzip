@@ -5,7 +5,7 @@ use std::path::{Component, Path, PathBuf};
 use zip::ZipArchive;
 
 use crate::codec::EncodingKind;
-use crate::error::RzipError;
+use crate::error::XzipError;
 use crate::filter::PathFilter;
 
 pub fn unpack_archive(
@@ -14,7 +14,7 @@ pub fn unpack_archive(
     encoding: EncodingKind,
     include: &[String],
     exclude: &[String],
-) -> Result<(), RzipError> {
+) -> Result<(), XzipError> {
     let file = File::open(input_zip)?;
     let mut archive = ZipArchive::new(file)?;
     fs::create_dir_all(output_dir)?;
@@ -47,7 +47,7 @@ pub fn unpack_archive(
     Ok(())
 }
 
-fn sanitize_relative_path(path: &str) -> Result<PathBuf, RzipError> {
+fn sanitize_relative_path(path: &str) -> Result<PathBuf, XzipError> {
     let candidate = Path::new(path);
     let mut safe = PathBuf::new();
     for comp in candidate.components() {
@@ -55,12 +55,12 @@ fn sanitize_relative_path(path: &str) -> Result<PathBuf, RzipError> {
             Component::Normal(part) => safe.push(part),
             Component::CurDir => {}
             Component::ParentDir | Component::Prefix(_) | Component::RootDir => {
-                return Err(RzipError::UnsafePath(path.to_string()));
+                return Err(XzipError::UnsafePath(path.to_string()));
             }
         }
     }
     if safe.as_os_str().is_empty() {
-        return Err(RzipError::UnsafePath(path.to_string()));
+        return Err(XzipError::UnsafePath(path.to_string()));
     }
     Ok(safe)
 }

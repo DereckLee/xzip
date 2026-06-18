@@ -2,10 +2,10 @@ use std::fs;
 use std::io::Write;
 use std::process::Command;
 
-use rzip::codec::EncodingKind;
-use rzip::pack::pack_path;
-use rzip::unpack::unpack_archive;
 use tempfile::tempdir;
+use xzip::codec::EncodingKind;
+use xzip::pack::pack_path;
+use xzip::unpack::unpack_archive;
 use zip::write::SimpleFileOptions;
 use zip::{CompressionMethod, ZipWriter};
 
@@ -76,7 +76,7 @@ fn cli_defaults_to_utf8_when_encoding_omitted() {
 
     let archive = temp.path().join("archive.zip");
     let output_dir = temp.path().join("output");
-    let bin = env!("CARGO_BIN_EXE_rzip");
+    let bin = env!("CARGO_BIN_EXE_xzip");
 
     let pack_status = Command::new(bin)
         .args([

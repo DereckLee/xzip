@@ -3,7 +3,7 @@ use std::path::PathBuf;
 use thiserror::Error;
 
 #[derive(Debug, Error)]
-pub enum RzipError {
+pub enum XzipError {
     #[error("unsupported encoding '{0}'. try one of: utf-8, gbk, cp936, shift_jis")]
     UnsupportedEncoding(String),
     #[error("i/o error: {0}")]

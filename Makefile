@@ -12,7 +12,7 @@ help:
 	@echo "  make format      - Format code with rustfmt"
 	@echo "  make check       - format + lint + test"
 	@echo "  make man         - Generate man pages into ./man"
-	@echo "  make install     - Install rzip binary with lockfile"
+	@echo "  make install     - Install xzip binary with lockfile"
 	@echo "  make install-man - Install man pages (run make man first)"
 
 build:
@@ -37,4 +37,4 @@ install:
 
 install-man: man
 	install -d $(MAN_DIR)
-	install -m 644 man/rzip*.1 $(MAN_DIR)/
+	install -m 644 man/xzip*.1 $(MAN_DIR)/

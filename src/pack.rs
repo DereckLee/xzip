@@ -7,7 +7,7 @@ use zip::write::SimpleFileOptions;
 use zip::{CompressionMethod, ZipWriter};
 
 use crate::codec::EncodingKind;
-use crate::error::RzipError;
+use crate::error::XzipError;
 use crate::filter::PathFilter;
 
 pub fn pack_path(
@@ -17,9 +17,9 @@ pub fn pack_path(
     recursive: bool,
     include: &[String],
     exclude: &[String],
-) -> Result<(), RzipError> {
+) -> Result<(), XzipError> {
     if !input.exists() {
-        return Err(RzipError::InvalidInput(input.to_path_buf()));
+        return Err(XzipError::InvalidInput(input.to_path_buf()));
     }
     let filter = PathFilter::new(include, exclude)?;
 
@@ -31,7 +31,7 @@ pub fn pack_path(
         let base = input
             .file_name()
             .and_then(|x| x.to_str())
-            .ok_or_else(|| RzipError::InvalidInput(input.to_path_buf()))?;
+            .ok_or_else(|| XzipError::InvalidInput(input.to_path_buf()))?;
         add_file(&mut writer, input, Path::new(base), options, encoding)?;
     } else {
         for entry in WalkDir::new(input) {
@@ -45,7 +45,7 @@ pub fn pack_path(
             }
             let relative = path
                 .strip_prefix(input)
-                .map_err(|_| RzipError::InvalidInput(input.to_path_buf()))?;
+                .map_err(|_| XzipError::InvalidInput(input.to_path_buf()))?;
             let zip_path = normalize_zip_path(relative);
             if !filter.allows(&zip_path) {
                 continue;
@@ -69,7 +69,7 @@ fn add_file<W: Write + std::io::Seek>(
     zip_relative_path: &Path,
     options: SimpleFileOptions,
     encoding: EncodingKind,
-) -> Result<(), RzipError> {
+) -> Result<(), XzipError> {
     let display_name = normalize_zip_path(zip_relative_path);
     // Validate representability under chosen encoding to keep behavior explicit.
     let encoded = encoding.encode(&display_name)?;

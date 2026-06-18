@@ -1,6 +1,6 @@
 use encoding_rs::{Encoding, GBK, SHIFT_JIS, UTF_8};
 
-use crate::error::RzipError;
+use crate::error::XzipError;
 
 #[derive(Clone, Copy, Debug)]
 pub enum EncodingKind {
@@ -10,13 +10,13 @@ pub enum EncodingKind {
 }
 
 impl EncodingKind {
-    pub fn from_label(value: &str) -> Result<Self, RzipError> {
+    pub fn from_label(value: &str) -> Result<Self, XzipError> {
         let normalized = value.trim().to_ascii_lowercase();
         match normalized.as_str() {
             "utf8" | "utf-8" | "unicode" => Ok(Self::Utf8),
             "gbk" | "cp936" | "936" => Ok(Self::Gbk),
             "shift_jis" | "shift-jis" | "sjis" | "cp932" => Ok(Self::ShiftJis),
-            _ => Err(RzipError::UnsupportedEncoding(value.to_string())),
+            _ => Err(XzipError::UnsupportedEncoding(value.to_string())),
         }
     }
 
@@ -36,20 +36,20 @@ impl EncodingKind {
         }
     }
 
-    pub fn decode(self, input: &[u8]) -> Result<String, RzipError> {
+    pub fn decode(self, input: &[u8]) -> Result<String, XzipError> {
         let (decoded, _, had_errors) = self.encoder().decode(input);
         if had_errors {
-            return Err(RzipError::DecodeEntryName {
+            return Err(XzipError::DecodeEntryName {
                 encoding: self.label(),
             });
         }
         Ok(decoded.into_owned())
     }
 
-    pub fn encode(self, input: &str) -> Result<Vec<u8>, RzipError> {
+    pub fn encode(self, input: &str) -> Result<Vec<u8>, XzipError> {
         let (encoded, _, had_errors) = self.encoder().encode(input);
         if had_errors {
-            return Err(RzipError::EncodePath {
+            return Err(XzipError::EncodePath {
                 path: input.to_string(),
                 encoding: self.label(),
             });

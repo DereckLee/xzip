@@ -1,11 +1,11 @@
 use clap::Parser;
 
-use rzip::cli::{Cli, Command};
-use rzip::codec::EncodingKind;
-use rzip::error::RzipError;
-use rzip::{pack, unpack};
+use xzip::cli::{Cli, Command};
+use xzip::codec::EncodingKind;
+use xzip::error::XzipError;
+use xzip::{pack, unpack};
 
-fn run(cli: Cli) -> Result<(), RzipError> {
+fn run(cli: Cli) -> Result<(), XzipError> {
     match cli.command {
         Command::Pack {
             input,

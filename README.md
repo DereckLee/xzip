@@ -1,6 +1,6 @@
-# rzip
+# xzip
 
-`rzip` is a ZIP CLI focused on filename encoding control for cross-locale workflows.
+`xzip` is a ZIP CLI focused on filename encoding control for cross-locale workflows.
 
 It is designed for cases like:
 
@@ -8,12 +8,12 @@ It is designed for cases like:
 - Archive extracted on an `en_US` UTF-8 machine.
 - Non-ASCII paths (CJK) become garbled without explicit encoding control.
 
-`rzip` defaults to `utf-8` when `--encoding` is omitted, and you can still override it with `-e/--encoding` for cross-locale archives.
+`xzip` defaults to `utf-8` when `--encoding` is omitted, and you can still override it with `-e/--encoding` for cross-locale archives.
 
 ## Install
 
 ```bash
-cargo install --locked rzip
+cargo install --locked xzip
 ```
 
 ### Man pages
@@ -22,30 +22,30 @@ Man pages are generated from the clap CLI definition via [`clap_mangen`](https:/
 
 ```bash
 make man
-# produces man/rzip.1, man/rzip-pack.1, man/rzip-unpack.1
+# produces man/xzip.1, man/xzip-pack.1, man/xzip-unpack.1
 
-man -l man/rzip.1
-man -l man/rzip-pack.1
+man -l man/xzip.1
+man -l man/xzip-pack.1
 ```
 
 Install man pages system-wide (requires root for `/usr/local`):
 
 ```bash
 sudo make install-man
-man rzip
+man xzip
 ```
 
 ## Usage
 
 ```bash
 # Pack a directory with explicit filename encoding
-rzip pack -i ./my-dir -o ./my-dir.zip -e gbk -r
+xzip pack -i ./my-dir -o ./my-dir.zip -e gbk -r
 
 # Unpack with explicit filename encoding
-rzip unpack -i ./my-dir.zip -o ./out -e gbk
+xzip unpack -i ./my-dir.zip -o ./out -e gbk
 
 # Omit encoding (defaults to utf-8)
-rzip pack -i ./my-dir -o ./my-dir.zip -r
+xzip pack -i ./my-dir -o ./my-dir.zip -r
 ```
 
 ## Common options
@@ -57,7 +57,7 @@ rzip pack -i ./my-dir -o ./my-dir.zip -r
 Example:
 
 ```bash
-rzip pack -i ./project -o ./project.zip -e utf-8 -r \
+xzip pack -i ./project -o ./project.zip -e utf-8 -r \
   --exclude ".git/**" \
   --exclude "target/**" \
   --include "**/*.rs"
@@ -71,4 +71,4 @@ rzip pack -i ./project -o ./project.zip -e utf-8 -r \
 
 ## Why explicit encoding
 
-Many archive tools infer filename encoding from locale or ZIP flags. In mixed environments this can produce corrupted paths during extraction. `rzip` makes the encoding choice explicit at runtime.
+Many archive tools infer filename encoding from locale or ZIP flags. In mixed environments this can produce corrupted paths during extraction. `xzip` makes the encoding choice explicit at runtime.

@@ -4,7 +4,7 @@ use std::path::PathBuf;
 
 use clap::CommandFactory;
 use clap_mangen::generate_to;
-use rzip::cli::Cli;
+use xzip::cli::Cli;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let out_dir = env::args()

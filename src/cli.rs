@@ -4,7 +4,7 @@ use clap::{Parser, Subcommand};
 
 #[derive(Parser, Debug)]
 #[command(
-    name = "rzip",
+    name = "xzip",
     version,
     about = "ZIP tool with explicit filename encoding control",
     long_about = "Pack and unpack ZIP archives with configurable filename encoding.\n\
