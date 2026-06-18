@@ -11,14 +11,12 @@ documentation = "https://docs.rs/xzip"
 readme = "README.md"
 keywords = ["zip", "cli", "encoding", "unicode", "winrar"]
 categories = ["command-line-utilities", "compression", "encoding"]
-exclude = [
-    "AGENTS.md",
-    ".github/**",
-    ".idea/**",
-    ".vscode/**",
-    "target/**",
-    "man/**",
-    "*.zip",
+include = [
+    "Cargo.toml",
+    "Cargo.lock",
+    "README.md",
+    "src/**/*",
+    "tests/**/*",
 ]
 
 [[bin]]
